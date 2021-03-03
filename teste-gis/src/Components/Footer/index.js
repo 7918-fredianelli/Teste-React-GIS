@@ -1,8 +1,10 @@
+import {FooterContainer} from "./styles";
+
 function Footer(){
     return(
-        <div>
-            <h1> Rodapé</h1>
-        </div>
+        <FooterContainer>
+            <p>Copyright© - Developed by: Vinícius Fredeanelle</p>
+        </FooterContainer>
     )
 }
 export default Footer;

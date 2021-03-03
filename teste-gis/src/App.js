@@ -9,11 +9,9 @@ function App() {
   const [clientsList, setClientsList] = useState(client)
 
   return (
-    <div className="App">
-      <ClientsContext.Provider value={{clientsList: clientsList, setClientsList: setClientsList}}>
-        <Router/>
-      </ClientsContext.Provider>
-    </div>
+    <ClientsContext.Provider value={{clientsList: clientsList, setClientsList: setClientsList}}>
+      <Router/>
+    </ClientsContext.Provider>
   );
 }
 

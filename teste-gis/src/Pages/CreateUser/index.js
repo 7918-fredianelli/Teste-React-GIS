@@ -1,8 +1,7 @@
-import Header from "../../Components/Header/index";
-import Footer from "../../Components/Footer/index";
 import {useForm, useUrl} from "../../Functions/CustomHooks";
 import {useContext} from "react";
 import ClientsContext from "../../Contexts/ClientsContext";
+import {NewUserContainer} from "./styles";
 
 function CreateUser(){
     
@@ -22,8 +21,6 @@ function CreateUser(){
     const buttonCreateUser = (event)=>{
         event.preventDefault()
         clientsList.push(form)
-        console.log(clientsList)
-        localStorage.setItem("clients", JSON.stringify(clientsList))
         goToHome()
     }
     
@@ -36,15 +33,14 @@ function CreateUser(){
     const [goToHome] = useUrl("/")
 
     return(
-        <div>
-            <Header/>
+        <NewUserContainer>
             <form>
                 <div>
                     <label>Nome:</label>
                     <input
                         name="name"
                         placeholder="João"
-                        // pattern={"[A-Za-z]{3,}"}
+                        pattern={"[A-Za-z]{3,}"}
                         title="O nome deve ter no mínimo 3 letras"
                         value={form.name}
                         onChange={handleInputChange}
@@ -56,7 +52,7 @@ function CreateUser(){
                     <input
                         name="telephone"
                         placeholder="11 99888-2211"
-                        // pattern="\([0-9]{2}\)[\s][0-9]{4}-[0-9]{4}"
+                        pattern="\([0-9]{2}\)[\s][0-9]{4}-[0-9]{4}"
                         type="number"
                         value={form.phone}
                         onChange={handleInputChange}
@@ -99,7 +95,7 @@ function CreateUser(){
                         name="cep"
                         placeholder="12345-221"
                         type="number"
-                        // pattern= "\d{5}-?\d{3}" 
+                        pattern= "\d{5}-?\d{3}" 
                         value={form.cep}
                         onChange={handleInputChange}
                         required
@@ -128,8 +124,7 @@ function CreateUser(){
                 </div>
                 <button onClick={buttonCreateUser}>Cadastrar</button>
             </form>
-            <Footer/>
-        </div>
+        </NewUserContainer>
     )
 }
 export default CreateUser;

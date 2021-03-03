@@ -1,59 +1,99 @@
 import React, {useState, useContext, useEffect} from "react";
-import Header from "../../Components/Header/index";
-import Footer from "../../Components/Footer/index";
 import {useUrl} from "../../Functions/CustomHooks";
 import ClientsContext from "../../Contexts/ClientsContext";
+import {HomeContainer, Button} from "./styles";
 
 function Home() {
 
   const [details, setDetails]= useState(false);
   const [userDetail, setUserDetail] = useState({});
   const {clientsList, setClientsList} = useContext(ClientsContext)
-  const [getClients, setGetClients] = useState([])
+  const [getUsers, setGetUsers] = useState([])
 
   const renderDetails = (user)=>{
     setUserDetail(user)
     setDetails(!details)
   }
-
-  useEffect(() => {
-    localStorage.getItem("clients")
-    setGetClients(localStorage.getItem("clients"))
-  }, [])
   
   const [goToCreateUser] = useUrl("/CriarUsuario")
   
-  return (
-    <div>
-      <Header/>
-        <button onClick={goToCreateUser}>Add</button>
-        {details === false ?
-        getClients.map((user)=>{
-        return( 
-          <div>
-              <div>
-                <li> <span>{user.name}</span> <span>{user.email}</span></li> 
-                <button onClick={()=>renderDetails(user)}>Ver mais</button>
-              </div>
-          </div>
-        ) 
+  useEffect(() => {
+    setGetUsers(clientsList)
+  },[])
+  
+  useEffect(() => {
+    setGetUsers(clientsList)
+  },[clientsList])
+
+
+  const deleteUser = (user)=>{
+    setClientsList(
+      clientsList.filter((client)=>{
+        if(user.email !== client.email){
+          return <li>{client}</li>
+        }
       })
-      : 
-      <div>
-        <ul>
-          <li>{userDetail.name}</li>
-          <li>{userDetail.telephone}</li>
-          <li>{userDetail.birthDate}</li>
-          <li>{userDetail.adress}</li>
-          <li>{userDetail.district}</li>
-          <li>{userDetail.cep}</li>
-          <li>{userDetail.referencePoint}</li>
-          <li>{userDetail.email}</li>
-        </ul>
-        <button onClick={renderDetails}>Voltar</button>
-      </div>}
-      <Footer/>
-    </div>
+    )
+  }
+  
+  return (
+    <HomeContainer>
+            {details === false ?
+          <>
+            <Button cor={"#e619e5"} onClick={goToCreateUser}>Novo Cliente</Button>
+            <table>
+                <tr>
+                  <th>Nome</th>
+                  <th>Email</th>
+                  <th>Ações</th>
+                </tr>
+                {getUsers.map((user)=>{
+                return( 
+                  <tr>
+                        <td>
+                          {user.name}
+                        </td>
+                        <td>
+                          {user.email}
+                        </td>
+                        {/* <li> <span>{user.name}</span> <span>{user.email}</span></li>  */}
+                        <td>
+                          <Button cor={"#00006f"} onClick={()=>renderDetails(user)}>Detalhes</Button>
+                          <Button cor={"#9b111e"} onClick={()=>deleteUser(user)}>Excluir</Button>
+                        </td>
+                  </tr>
+                )
+              })}
+            </table>
+          </>
+          : 
+          <>
+          <table>
+            <tr>
+                <th>Nome</th>
+                <th>Telefone</th>
+                <th>Data de Nascimento</th>
+                <th>Endereço</th>
+                <th>Bairro</th>
+                <th>CEP</th>
+                <th>Ponto de referência</th>
+                <th>Email</th>
+              </tr>
+            <tr>
+                <td>{userDetail.name}</td>
+                <td>{userDetail.telephone}</td>
+                <td>{userDetail.birthDate}</td>
+                <td>{userDetail.adress}</td>
+                <td>{userDetail.district}</td>
+                <td>{userDetail.cep}</td>
+                <td>{userDetail.referencePoint}</td>
+                <td>{userDetail.email}</td>
+              </tr>
+          </table>
+            <Button cor={"#e619e5"} onClick={renderDetails}>Voltar</Button>
+          </>
+          }
+    </HomeContainer>
   );
 }
 
